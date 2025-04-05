@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Screens/sign_in.dart';
 import 'package:flutter_application_1/widget/navigation_bar.dart';
+import 'package:flutter_application_1/widget/snackbar.dart';
 import '../Widget/Button.dart';
 import '../widget/text_field.dart';
+import '../services/authentication.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -25,6 +27,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
     passwordController.dispose();
     nameController.dispose();
     phoneController.dispose();
+  }
+   void signupUser() async {
+    // set is loading to true.
+    setState(() {
+      isLoading = true;
+    });
+    // signup user using our authmethod
+    String res = await AuthMethod().signupUser(
+        email: emailController.text,
+        password: passwordController.text,
+        name: nameController.text,
+        phone: phoneController.text);
+    // if string return is success, user has been creaded and navigate to next screen other witse show error.
+    if (res == "success") {
+      setState(() {
+        isLoading = false;
+      });
+      //navigate to the next screen
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const SignInScreen(),
+        ),
+      );
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+      // show error
+      showSnackBar(context, res);
+    }
   }
 
   @override
