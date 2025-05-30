@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "971953221659",
+    "project_id": "aqua-guard-68df1",
+    "storage_bucket": "aqua-guard-68df1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:971953221659:android:2a4c2c8e3a0f6eec3d08be",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDduQ8o7vs6nZ7TiZxTfJKhPsYOJMuxw4A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

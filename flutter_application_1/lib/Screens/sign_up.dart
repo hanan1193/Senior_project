@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Screens/sign_in.dart';
-import 'package:flutter_application_1/widget/navigation_bar.dart';
+// import 'package:flutter_application_1/widget/navigation_bar.dart';
 import 'package:flutter_application_1/widget/snackbar.dart';
 import '../Widget/Button.dart';
 import '../widget/text_field.dart';
@@ -39,6 +39,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         password: passwordController.text,
         name: nameController.text,
         phone: phoneController.text);
+        if (!mounted) return;
     // if string return is success, user has been creaded and navigate to next screen other witse show error.
     if (res == "success") {
       setState(() {
@@ -161,11 +162,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     const SizedBox(height: 8.5),
                     MyButtons(
                       onTap: (){
-                         Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) =>  Navigation_Bar(),
-                            ),
-                          );
+                        //  Navigator.of(context).push(
+                        //     MaterialPageRoute(
+                        //       builder: (context) =>  Navigation_Bar(),
+                        //     ),
+                        //   );
+                       signupUser();
                       },
                       text: "Sign up",
                     )

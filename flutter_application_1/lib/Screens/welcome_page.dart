@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Screens/sign_in.dart';
 import 'package:flutter_application_1/Screens/sign_up.dart';
-import 'package:flutter_application_1/widget/navigation_bar.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});

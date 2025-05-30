@@ -39,6 +39,8 @@ import 'package:flutter_application_1/Screens/camera.dart';
 import 'package:flutter_application_1/Screens/clock.dart';
 
 class  Navigation_Bar extends StatelessWidget {
+  const Navigation_Bar({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

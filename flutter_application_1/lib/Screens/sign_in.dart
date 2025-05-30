@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/Screens/welcome_page.dart';
+// import 'package:flutter_application_1/Screens/welcome_page.dart';
 import 'package:flutter_application_1/widget/forgot_pass.dart';
+import 'package:flutter_application_1/widget/navigation_bar.dart';
 import 'package:flutter_application_1/widget/snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Widget/Button.dart';
 import '../Widget/text_field.dart';
 import '../services/authentication.dart';
+// import 'package:flutter_application_1/Screens/camera.dart';
+
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -51,7 +54,7 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   // 🔑 Sign-In Function
-  void SignInUser() async {
+  void signInUser() async {
     setState(() {
       isLoading = true;
     });
@@ -60,16 +63,17 @@ class _SignInScreenState extends State<SignInScreen> {
       email: emailController.text,
       password: passwordController.text,
     );
+     if (!mounted) return; 
 
     if (res == "success") {
       saveUserCredentials(); // Save credentials on successful sign-in
 
       // Get user ID
-      String? userId = await AuthMethod().getUserId();
+      String? userId = AuthMethod().getUserId();
       if (userId != null) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => WelcomePage(),
+            builder: (context) => Navigation_Bar(),
           ),
         );
       } else {
@@ -123,7 +127,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
+                            color: Colors.black.withAlpha(25),
                             blurRadius: 10,
                             spreadRadius: 2,
                           ),
@@ -184,7 +188,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             ],
                           ),
                           SizedBox(height: 15),
-                          MyButtons(onTap: () {}, text: "Sign in"),
+                          MyButtons(onTap:  signInUser, text: "Sign in"),
                         ],
                       ),
                     ),

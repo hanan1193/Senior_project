@@ -6,11 +6,11 @@ class TextFieldInput extends StatefulWidget {
   final bool isPass;
 
   const TextFieldInput({
-    Key? key,
+    super.key,
     required this.textEditingController,
     this.isPass = false,
     required this.hintText,
-  }) : super(key: key);
+  });
 
   @override
   State<TextFieldInput> createState() => _TextFieldInputState();

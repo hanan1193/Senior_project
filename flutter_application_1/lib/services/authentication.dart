@@ -88,7 +88,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthMethod {
+  // for storing data in cloud firestore
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  // for authentication
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // Sign Up User
@@ -101,7 +103,7 @@ class AuthMethod {
     String res = "Some error occurred";
     try {
       if (email.isNotEmpty && password.isNotEmpty && name.isNotEmpty && phone.isNotEmpty) {
-        // Register user in Firebase Authentication
+        // Register user in Firebase Authentication with email and password 
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
           email: email,
           password: password,
