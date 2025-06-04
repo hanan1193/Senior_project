@@ -38,7 +38,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Screens/camera.dart';
 import 'package:flutter_application_1/Screens/clock.dart';
 
-class  Navigation_Bar extends StatelessWidget {
+class Navigation_Bar extends StatelessWidget {
   const Navigation_Bar({super.key});
 
   @override
@@ -51,19 +51,23 @@ class  Navigation_Bar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             IconButton(
-              icon: const Icon(Icons.access_time_outlined, color: Colors.black,
-              size:35,
+              icon: const Icon(
+                Icons.access_time_outlined,
+                color: Colors.black,
+                size: 35,
               ),
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ClockScreen()),
+                  MaterialPageRoute(builder: (context) => SensorMonitorPage()),
                 );
               },
             ),
             IconButton(
-              icon: const Icon(Icons.camera_alt_outlined, color: Colors.black,
-              size: 35,
+              icon: const Icon(
+                Icons.camera_alt_outlined,
+                color: Colors.black,
+                size: 35,
               ),
               onPressed: () {
                 Navigator.push(

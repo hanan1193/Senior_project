@@ -1,6 +1,6 @@
-// import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-// import '../Widget/snackbar.dart';
+import '../Widget/snackbar.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
@@ -11,12 +11,10 @@ class ForgotPassword extends StatefulWidget {
 
 class _ForgotPasswordState extends State<ForgotPassword> {
   TextEditingController emailController = TextEditingController();
-  // final auth = FirebaseAuth.instance;
+  final auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 35),
-      child: Align(
+    return  Align(
         alignment: Alignment.centerRight,
         child: InkWell(
           onTap: () {
@@ -31,7 +29,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             ),
           ),
         ),
-      ),
+      
     );
   }
 
@@ -84,7 +82,24 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   ElevatedButton(
                     style:
                     ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-                    onPressed: () {},
+                    onPressed: 
+                      () async {
+                      await auth
+                          .sendPasswordResetEmail(email: emailController.text)
+                          .then((value) {
+                        // if success then show this message
+                        showSnackBar(context,
+                            "We have send you the reset password link to your email id, Please check it");
+                      }).onError((error, stackTrace) {
+                        // if unsuccess then show error message
+                        showSnackBar(context, error.toString());
+                      });
+                      // terminate the dialog after send the forgot password link
+                      Navigator.pop(context);
+                      // clear the text field
+                      emailController.clear();
+                    
+                    },
 
                     // if we remember the password then we can easily login
                     // if we forget the password then we apply this method
