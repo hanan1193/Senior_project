@@ -59,7 +59,8 @@ class Navigation_Bar extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SensorMonitorPage()),
+                  MaterialPageRoute(
+                      builder: (context) => SwimmerMonitoringPage()),
                 );
               },
             ),

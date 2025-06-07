@@ -50,6 +50,7 @@ class DefaultFirebaseOptions {
     projectId: 'aqua-guard-68df1',
     authDomain: 'aqua-guard-68df1.firebaseapp.com',
     storageBucket: 'aqua-guard-68df1.firebasestorage.app',
+    databaseURL: 'https://aqua-guard-68df1-default-rtdb.firebaseio.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
@@ -58,6 +59,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '971953221659',
     projectId: 'aqua-guard-68df1',
     storageBucket: 'aqua-guard-68df1.firebasestorage.app',
+    databaseURL: 'https://aqua-guard-68df1-default-rtdb.firebaseio.com',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -67,6 +69,7 @@ class DefaultFirebaseOptions {
     projectId: 'aqua-guard-68df1',
     storageBucket: 'aqua-guard-68df1.firebasestorage.app',
     iosBundleId: 'com.example.flutterApplication1',
+    databaseURL: 'https://aqua-guard-68df1-default-rtdb.firebaseio.com',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
@@ -76,5 +79,6 @@ class DefaultFirebaseOptions {
     projectId: 'aqua-guard-68df1',
     authDomain: 'aqua-guard-68df1.firebaseapp.com',
     storageBucket: 'aqua-guard-68df1.firebasestorage.app',
+    databaseURL: 'https://aqua-guard-68df1-default-rtdb.firebaseio.com',
   );
 }
