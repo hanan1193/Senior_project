@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter_application_1/Screens/welcome_page.dart';
 import 'package:flutter_application_1/widget/forgot_pass.dart';
-import 'package:flutter_application_1/widget/navigation_bar.dart';
+import 'package:flutter_application_1/Screens/ClocksPage';
 import 'package:flutter_application_1/widget/snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Widget/Button.dart';
 import '../Widget/text_field.dart';
 import '../services/authentication.dart';
 // import 'package:flutter_application_1/Screens/camera.dart';
-
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -63,7 +62,7 @@ class _SignInScreenState extends State<SignInScreen> {
       email: emailController.text,
       password: passwordController.text,
     );
-     if (!mounted) return; 
+    if (!mounted) return;
 
     if (res == "success") {
       saveUserCredentials(); // Save credentials on successful sign-in
@@ -73,7 +72,7 @@ class _SignInScreenState extends State<SignInScreen> {
       if (userId != null) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => Navigation_Bar(),
+            builder: (context) => ClocksPage(),
           ),
         );
       } else {
@@ -89,7 +88,6 @@ class _SignInScreenState extends State<SignInScreen> {
       showSnackBar(context, res); // Display error message
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -107,18 +105,18 @@ class _SignInScreenState extends State<SignInScreen> {
                 Positioned.fill(
                   child: Align(
                     alignment: Alignment.bottomCenter,
-                    child:  Image.asset(
-                        'assets/f3.jpg',
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
-                    
+                    child: Image.asset(
+                      'assets/f3.jpg',
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
                 Column(
-                  children: [  
+                  children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 40),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.only(
@@ -188,7 +186,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             ],
                           ),
                           SizedBox(height: 15),
-                          MyButtons(onTap:  signInUser, text: "Sign in"),
+                          MyButtons(onTap: signInUser, text: "Sign in"),
                         ],
                       ),
                     ),
@@ -202,4 +200,3 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 }
-

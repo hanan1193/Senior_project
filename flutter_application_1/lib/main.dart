@@ -4,15 +4,25 @@ import 'package:flutter/material.dart';
 import 'Screens/welcome_page.dart';
 import 'package:flutter_application_1/firebase_options.dart';
 
-void main() async {
+// void main() async {
 
+//   WidgetsFlutterBinding.ensureInitialized();
+
+//   await Firebase.initializeApp(
+//     options: DefaultFirebaseOptions.currentPlatform,
+//   );
+
+//   runApp(const MyApp());
+// }
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
+  // هذا يتحقق إذا كان التطبيق مهيأ مسبقًا
+  if (Firebase.apps.isEmpty) {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  }
 
   runApp(const MyApp());
 }
@@ -21,20 +31,6 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  // Widget build(BuildContext context) {
-  //   return MaterialApp(
-  //     debugShowCheckedModeBanner: false,
-  //     home: StreamBuilder(stream: FirebaseAuth.instance.authStateChanges(),
-  //         builder: (context, snapshot){
-  //       if(snapshot.hasData){
-  //         return WelcomePage();
-  //       }
-  //       else {
-  //         return WelcomePage();
-  //       }
-  //         }),
-  //   );
-  // }
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -44,5 +40,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
