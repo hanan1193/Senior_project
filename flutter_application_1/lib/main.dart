@@ -1,29 +1,21 @@
-// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'Screens/welcome_page.dart';
 import 'package:flutter_application_1/firebase_options.dart';
 
-// void main() async {
-
-//   WidgetsFlutterBinding.ensureInitialized();
-
-//   await Firebase.initializeApp(
-//     options: DefaultFirebaseOptions.currentPlatform,
-//   );
-
-//   runApp(const MyApp());
-// }
 void main() async {
+  // Ensures Flutter bindings are initialized before calling any async code
   WidgetsFlutterBinding.ensureInitialized();
 
-  // هذا يتحقق إذا كان التطبيق مهيأ مسبقًا
-  if (Firebase.apps.isEmpty) {
+  try {
+    // Initializes Firebase with platform-specific options
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+  } catch (e) {
+    // If Firebase is already initialized, catch the error and print a message
+    print("Firebase already initialized: $e");
   }
-
   runApp(const MyApp());
 }
 

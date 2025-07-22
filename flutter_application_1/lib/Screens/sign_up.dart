@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Screens/sign_in.dart';
-// import 'package:flutter_application_1/widget/navigation_bar.dart';
 import 'package:flutter_application_1/widget/snackbar.dart';
 import '../Widget/Button.dart';
 import '../widget/text_field.dart';
@@ -14,37 +13,33 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  // Text controllers for the input fields
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-  bool isLoading = false;
-
+  // Clean up controllers when the widget is disposed
   @override
   void dispose() {
-    super.dispose();
     emailController.dispose();
     passwordController.dispose();
     nameController.dispose();
     phoneController.dispose();
+    super.dispose();
   }
-   void signupUser() async {
-    // set is loading to true.
-    setState(() {
-      isLoading = true;
-    });
+
+  void signupUser() async {
     // signup user using our authmethod
     String res = await AuthMethod().signupUser(
         email: emailController.text,
         password: passwordController.text,
         name: nameController.text,
         phone: phoneController.text);
-        if (!mounted) return;
+    // Check if the widget is still mounted before performing any UI-related actions.
+    // This prevents errors if the widget was disposed while waiting for async tasks.
+    if (!mounted) return;
     // if string return is success, user has been creaded and navigate to next screen other witse show error.
     if (res == "success") {
-      setState(() {
-        isLoading = false;
-      });
       //navigate to the next screen
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
@@ -52,9 +47,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       );
     } else {
-      setState(() {
-        isLoading = false;
-      });
       // show error
       showSnackBar(context, res);
     }
@@ -63,6 +55,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // Extends the body behind the AppBar for a full-screen image effect
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
@@ -71,6 +64,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       body: SingleChildScrollView(
         child: Container(
           decoration: const BoxDecoration(
+            // Background image for the whole screen
             image: DecorationImage(
               image: AssetImage('assets/f2.jpg'),
               fit: BoxFit.cover,
@@ -78,6 +72,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
           child: Column(
             children: [
+              // Top image shown above the white container
               const Image(
                 image: AssetImage('assets/f2.jpg'),
                 height: 250,
@@ -85,7 +80,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 fit: BoxFit.cover,
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 25),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 25),
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(40),
@@ -124,11 +120,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         GestureDetector(
                           onTap: () {
-                             Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const SignInScreen(),
-                            ),
-                          );
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const SignInScreen(),
+                              ),
+                            );
                           },
                           child: const Text(
                             'Sign in',
@@ -161,13 +157,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     const SizedBox(height: 8.5),
                     MyButtons(
-                      onTap: (){
-                        //  Navigator.of(context).push(
-                        //     MaterialPageRoute(
-                        //       builder: (context) =>  Navigation_Bar(),
-                        //     ),
-                        //   );
-                       signupUser();
+                      onTap: () {
+                        signupUser();
                       },
                       text: "Sign up",
                     )
@@ -181,5 +172,3 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 }
-
-

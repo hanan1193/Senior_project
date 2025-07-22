@@ -76,7 +76,7 @@ class _swimmerMonitoringPageState extends State<swimmerMonitoringPage> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'Swimmer Monitoring System',
+          'Swimmer Monitoring',
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.w600,

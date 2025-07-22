@@ -1,5 +1,138 @@
 
 
+// import 'package:flutter/material.dart';
+// import 'package:firebase_database/firebase_database.dart';
+// import 'package:audioplayers/audioplayers.dart';
+// import 'package:flutter_animate/flutter_animate.dart';
+// import 'swimmerMonitoringPage.dart';
+
+// class ClocksPage extends StatefulWidget {
+//   @override
+//   _ClocksPageState createState() => _ClocksPageState();
+// }
+
+// class _ClocksPageState extends State<ClocksPage> {
+//   final List<String> clockIds = [
+//     '123456', '234567', '345678', '456789', '567890', '678901'
+//   ];
+
+//   final DatabaseReference _database = FirebaseDatabase.instance.ref('Sensor');
+//   final AudioPlayer _player = AudioPlayer();
+//   bool _playedAlert = false;
+//   String status = 'SAFE';
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     _activateStatusListener();
+//   }
+
+//   @override
+//   void dispose() {
+//     _player.dispose();
+//     super.dispose();
+//   }
+
+//   void _activateStatusListener() {
+//     _database.onValue.listen((event) {
+//       final data = event.snapshot.value as Map<dynamic, dynamic>?;
+//       if (data != null) {
+//         setState(() {
+//           status = data['status']?.toString() ?? 'SAFE';
+
+//           if (status != 'SAFE' && !_playedAlert) {
+//             _playedAlert = true;
+//             _player.play(AssetSource('siren.mp3'));
+//           } else if (status == 'SAFE') {
+//             _playedAlert = false;
+//             _player.stop();
+//           }
+//         });
+//       }
+//     });
+//   }
+
+//   Color _getCardColor(String status) {
+//     return status == 'DROWNING' ? Colors.red[300]! : Colors.blue[300]!;
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text(
+//           'Drowning Detection System',
+//           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+//         ),
+//         centerTitle: true,
+//         backgroundColor: Colors.lightBlueAccent,
+//       ),
+//       body: Padding(
+//         // padding: const EdgeInsets.all(35.0),
+//         padding: const EdgeInsets.fromLTRB(35.0, 90.0, 35.0, 35.0),
+//         child: GridView.builder(
+//           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+//             crossAxisCount: 2,
+//             crossAxisSpacing: 16,
+//             mainAxisSpacing: 16,
+//             childAspectRatio: 3 / 2,
+//           ),
+//           itemCount: clockIds.length,
+//           itemBuilder: (context, index) {
+//             final baseCard = Card(
+//               color: index == 0 ? _getCardColor(status) : Colors.blue[100]!,
+//               shape: RoundedRectangleBorder(
+//                 borderRadius: BorderRadius.circular(16),
+//               ),
+//               elevation: 4,
+//               child: Column(
+//                 mainAxisAlignment: MainAxisAlignment.center,
+//                 children: [
+//                   const Icon(
+//                     Icons.access_time,
+//                     size: 48,
+//                     color: Colors.white,
+//                   ),
+//                   const SizedBox(height: 12),
+//                   Text(
+//                     'ID=${clockIds[index]}',
+//                     style: const TextStyle(
+//                       color: Colors.white,
+//                       fontWeight: FontWeight.bold,
+//                       fontSize: 16,
+//                     ),
+//                   )
+//                 ],
+//               ),
+//             );
+
+//             final animatedCard = index == 0 && status != 'SAFE'
+//                 ? baseCard.animate(effects: [ShakeEffect(duration: 600.ms)])
+//                 : baseCard;
+
+//             return index == 0
+//                 ? InkWell(
+//                     onTap: () {
+//                       Navigator.push(
+//                         context,
+//                         MaterialPageRoute(
+//                           builder: (context) => swimmerMonitoringPage(),
+//                         ),
+//                       );
+//                     },
+//                     borderRadius: BorderRadius.circular(16),
+//                     child: animatedCard,
+//                   )
+//                 : animatedCard;
+//           },
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+//11/7/2025
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -18,8 +151,10 @@ class _ClocksPageState extends State<ClocksPage> {
 
   final DatabaseReference _database = FirebaseDatabase.instance.ref('Sensor');
   final AudioPlayer _player = AudioPlayer();
-  bool _playedAlert = false;
+
   String status = 'SAFE';
+  Timer? _statusTimer;
+  bool _showAlert = false; // لما تصير true: يصير لون أحمر وصوت واهتزاز
 
   @override
   void initState() {
@@ -30,30 +165,50 @@ class _ClocksPageState extends State<ClocksPage> {
   @override
   void dispose() {
     _player.dispose();
+    _statusTimer?.cancel();
     super.dispose();
   }
 
   void _activateStatusListener() {
     _database.onValue.listen((event) {
       final data = event.snapshot.value as Map<dynamic, dynamic>?;
-      if (data != null) {
-        setState(() {
-          status = data['status']?.toString() ?? 'SAFE';
 
-          if (status != 'SAFE' && !_playedAlert) {
-            _playedAlert = true;
-            _player.play(AssetSource('siren.mp3'));
-          } else if (status == 'SAFE') {
-            _playedAlert = false;
-            _player.stop();
-          }
+      if (data != null) {
+        final newStatus = data['status']?.toString().toUpperCase() ?? 'SAFE';
+
+        setState(() {
+          status = newStatus;
         });
+
+        if (newStatus.contains('DROWN')) {
+          if (_statusTimer == null && !_showAlert) {
+            _statusTimer = Timer(Duration(seconds: 10), () async {
+              if (status.contains('DROWN')) {
+                setState(() {
+                  _showAlert = true; // فعل الإنذار
+                });
+
+                _player.play(AssetSource('siren.mp3')); // شغّل الصوت
+              }
+              _statusTimer = null;
+            });
+          }
+        } else if (newStatus == 'SAFE') {
+          _statusTimer?.cancel();
+          _statusTimer = null;
+
+          setState(() {
+            _showAlert = false;
+          });
+
+          _player.stop();
+        }
       }
     });
   }
 
-  Color _getCardColor(String status) {
-    return status == 'DROWNING ALERT!' ? Colors.red[300]! : Colors.blue[300]!;
+  Color _getCardColor(bool showAlert) {
+    return showAlert ? Colors.red[300]! : Colors.blue[300]!;
   }
 
   @override
@@ -68,7 +223,7 @@ class _ClocksPageState extends State<ClocksPage> {
         backgroundColor: Colors.lightBlueAccent,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(35.0),
+        padding: const EdgeInsets.fromLTRB(35.0, 90.0, 35.0, 35.0),
         child: GridView.builder(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
@@ -78,8 +233,14 @@ class _ClocksPageState extends State<ClocksPage> {
           ),
           itemCount: clockIds.length,
           itemBuilder: (context, index) {
+            final isFirstCard = index == 0;
+
+            final cardColor = isFirstCard
+                ? _getCardColor(_showAlert)
+                : Colors.blue[100]!;
+
             final baseCard = Card(
-              color: index == 0 ? _getCardColor(status) : Colors.blue[100]!,
+              color: cardColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
               ),
@@ -105,11 +266,12 @@ class _ClocksPageState extends State<ClocksPage> {
               ),
             );
 
-            final animatedCard = index == 0 && status != 'SAFE'
+            // Animation فقط لأول كرت إذا صار إنذار
+            final animatedCard = isFirstCard && _showAlert
                 ? baseCard.animate(effects: [ShakeEffect(duration: 600.ms)])
                 : baseCard;
 
-            return index == 0
+            return isFirstCard
                 ? InkWell(
                     onTap: () {
                       Navigator.push(
@@ -129,4 +291,3 @@ class _ClocksPageState extends State<ClocksPage> {
     );
   }
 }
-

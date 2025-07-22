@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
+/// A reusable custom text field widget.
+/// Supports both regular text input and password input with visibility toggle.
 class TextFieldInput extends StatefulWidget {
-  final TextEditingController textEditingController;
+  final TextEditingController
+      textEditingController; // Controller to manage the input text
   final String hintText;
-  final bool isPass;
+  final bool isPass; // Determines if the field is for password input
 
   const TextFieldInput({
     super.key,
@@ -17,7 +20,7 @@ class TextFieldInput extends StatefulWidget {
 }
 
 class _TextFieldInputState extends State<TextFieldInput> {
-  bool _isObscured = true; // State variable for password visibility
+  bool _isObscured = true; // Controls the visibility of the password text
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +29,9 @@ class _TextFieldInputState extends State<TextFieldInput> {
       child: TextField(
         style: const TextStyle(fontSize: 20),
         controller: widget.textEditingController,
-        obscureText: widget.isPass ? _isObscured : false, // Obscure text only for password fields
+        obscureText: widget.isPass
+            ? _isObscured
+            : false, // Obscure text only for password fields
         decoration: InputDecoration(
           hintText: widget.hintText,
           hintStyle: const TextStyle(color: Colors.black45, fontSize: 18),
@@ -47,16 +52,16 @@ class _TextFieldInputState extends State<TextFieldInput> {
           ),
           suffixIcon: widget.isPass // Show suffix icon only for password fields
               ? GestureDetector(
-            onTap: () {
-              setState(() {
-                _isObscured = !_isObscured; // Toggle state on tap
-              });
-            },
-            child: Icon(
-              _isObscured ? Icons.visibility_off : Icons.visibility,
-              color: Colors.grey,
-            ),
-          )
+                  onTap: () {
+                    setState(() {
+                      _isObscured = !_isObscured; // Toggle password visibility
+                    });
+                  },
+                  child: Icon(
+                    _isObscured ? Icons.visibility_off : Icons.visibility,
+                    color: Colors.grey,
+                  ),
+                )
               : null, // No icon for non-password fields
         ),
       ),
